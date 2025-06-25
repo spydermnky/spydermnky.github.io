@@ -358,6 +358,15 @@
             box-shadow: 0 4px 15px rgba(247, 37, 133, 0.3);
         }
 
+        .profile-pic {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 20px;
+            display: block;
+        }
+
         /* Animations */
         @keyframes fadeInUp {
             from {
@@ -425,6 +434,7 @@
         <section id="about" class="about">
             <div class="container">
                 <h2 class="section-title">About Me</h2>
+                <img src="images/misc/profilePic.png" alt="Peter" class="profile-pic">
                 <p class="about-text">
                     I'm a computational game design student at Carnegie Mellon's School of Computer Science, 
                     passionate about creating immersive, interactive experiences that blend technology with artistry. 
@@ -772,13 +782,7 @@
                 content: `
                     <p>A co-op game created in Unity where 2 players manage cooking for a restaurant and eliminate the wolves of Wall Street.</p>
                     
-                    <h3>Key Features:</h3>
-                    <ul>
-                        <li>Wave function collapse algorithm for room generation</li>
-                        <li>Cellular automata for organic cave systems</li>
-                        <li>Intelligent enemy and treasure placement</li>
-                        <li>Seamless integration with Unity's navigation system</li>
-                    </ul>
+                    <h3>Screenshots:</h3>
                     
                     <div class="media-grid">
                         <div class="media-placeholder">
@@ -791,10 +795,15 @@
                             <img src="images/brickHouse/brickHouseIMG4.png" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                         <div class="media-placeholder">
-                            <iframe width="100%" height="200" 
-                                src="https://youtu.be/TIWujsYnAMg" 
-                                frameborder="0" allowfullscreen>
-                            </iframe>
+                            <div class="media-placeholder">
+                                <iframe width="100%" height="200" 
+                                        src="https://www.youtube.com/embed/TIWujsYnAMg?si=SEhAH3EXrb9P7pBz" 
+                                        title="YouTube video player" 
+                                        frameborder="0" 
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                        referrerpolicy="strict-origin-when-cross-origin" 
+                                        allowfullscreen>
+                                </iframe>
                         </div>
                     </div>
                 `
@@ -804,13 +813,7 @@
                 content: `
                     <p>A 2D fighter game where your family is murdered by a gang led by a baseball. Use your basketball martial arts to defeat anyone in your way.</p>
                     
-                    <h3>Key Features</h3>
-                    <ul>
-                        <li>TensorFlow-based emotion detection from gameplay data</li>
-                        <li>Dynamic narrative tree generation</li>
-                        <li>Natural language processing for dialogue adaptation</li>
-                        <li>A/B testing framework for narrative effectiveness</li>
-                    </ul>
+                    <h3>Screenshots:</h3>
                     
                     <div class="media-grid">
                         <div class="media-placeholder">
@@ -833,13 +836,8 @@
                 content: `
                     <p>A 2D platformer that explores the Japanese folklore tales of the Dodomeki. Use your eyes to switch from the real world to the Yokai realm.</p>
                     
-                    <h3>Key Features:</h3>
-                    <ul>
-                        <li>Genetic algorithm-based creature evolution</li>
-                        <li>Dynamic weather and climate systems</li>
-                        <li>Predator-prey relationship modeling</li>
-                        <li>Interactive environmental modification tools</li>
-                    </ul>
+                    <h3>Screenshots:</h3>
+                    
                     
                     <div class="media-grid">
                         <div class="media-placeholder">
@@ -862,13 +860,8 @@
                 content: `
                     <p>A 2D game where you take on the role of an underwater hunter, trapping fish in bubbles and avoiding deep-sea trash.</p>
                     
-                    <h3>Key Features:</h3>
-                    <ul>
-                        <li>Adaptive AI that learns from player strategies</li>
-                        <li>Dynamic resource scarcity and abundance cycles</li>
-                        <li>Real-time network synchronization</li>
-                        <li>Modular unit design system</li>
-                    </ul>
+                    <h3>Screenshots:</h3>
+                    
                     
                     <div class="media-grid">
                         <div class="media-placeholder">
@@ -897,6 +890,8 @@
                         <li>Animation in Autodesk Maya</li>
                         <li>Texturing in Adobe Substance Painter</li>
                     </ul>
+
+                    <h3>Screenshots:</h3>
                     
                     <div class="media-grid">
                         <div class="media-placeholder">
