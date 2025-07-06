@@ -93,7 +93,7 @@
             left: 50%;
             transform: translateX(-50%);
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(110, 10, 143, 0.2);
             backdrop-filter: blur(10px);
             border-radius: 50px;
             padding: 10px 20px;
@@ -424,8 +424,8 @@
 
     <header id="home">
         <div class="hero-content">
-            <h1 class="hero-title">Peter Khomchenko</h1>
-            <p class="hero-subtitle">Software Engineer & Computational Game Designer</p>
+            <h1 class="hero-title">Hi! I'm Peter.</h1>
+            <p class="hero-subtitle">Game Dev & SWE</p>
             <a href="#projects" class="cta-button">Explore My Work</a>
         </div>
     </header>
@@ -440,6 +440,7 @@
                     passionate about creating immersive, interactive experiences that blend technology with artistry. 
                     My work explores the intersection of procedural generation, artificial intelligence, and 
                     human-centered design to craft games that are both technically innovative and emotionally engaging.
+                    As a hobby, I create cinematics using Autodesk Maya!
                 </p>
             </div>
         </section>
@@ -550,11 +551,12 @@
         <div class="container">
             <div class="footer-content">
                 <h2>Let's Connect</h2>
-                <p>Interested in collaborating or learning more about my work? I'd love to hear from you!</p>
+                <p>Feel free to reach out!</p>
                 <div class="social-links">
                     <a href="mailto:pkhomche@andrew.cmu.edu" class="social-link">📧</a>
                     <a href="https://www.linkedin.com/in/peter-khomchenko-482521229" class="social-link">💼</a>
-                    <a href="https://x.com/nomolecules" class="social-link">🐦</a>
+                    <a href="https://github.com/spydermnky" class="social-link">👾</a>
+                    <a href="https://x.com/nomolecules" class="social-link">𝕏</a>
                 </div>
             </div>
         </div>
@@ -575,8 +577,16 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
+        // Replace the existing Three.js script section with this enhanced version
+
+        // Replace the existing Three.js script section with this enhanced version
+
         // Three.js Background Animation
-        let scene, camera, renderer, particles, mountains;
+        let scene, camera, renderer, galaxyParticles;
+        let mouse = { x: 0, y: 0 };
+        let targetRotation = { x: 0, y: 0 };
+        let currentRotation = { x: 0, y: 0 };
+        let galaxyRotation = 0;
 
         function initThree() {
             scene = new THREE.Scene();
@@ -587,68 +597,33 @@
             });
             renderer.setSize(window.innerWidth, window.innerHeight);
 
-            // Create sunset sky background
-            createSunsetSky();
+            // Create gradient background
+            createGradientBackground();
 
-            // Create mountain silhouettes
-            createMountains();
+            // Create Andromeda galaxy
+            createAndromedaGalaxy();
 
-            // Create floating particles
-            const particleCount = 100;
-            const positions = new Float32Array(particleCount * 3);
-            const colors = new Float32Array(particleCount * 3);
+            // Add mouse move listener
+            document.addEventListener('mousemove', onMouseMove, false);
 
-            for (let i = 0; i < particleCount; i++) {
-                positions[i * 3] = (Math.random() - 0.5) * 15;
-                positions[i * 3 + 1] = (Math.random() - 0.5) * 10;
-                positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
-
-                // Nature-inspired colors with sunset tones
-                const colorChoice = Math.random();
-                if (colorChoice < 0.2) {
-                    colors[i * 3] = 0.9;     // R - warm sunset particles
-                    colors[i * 3 + 1] = 0.6; // G
-                    colors[i * 3 + 2] = 0.3; // B
-                } else if (colorChoice < 0.4) {
-                    colors[i * 3] = 0.8;     // R - purple particles
-                    colors[i * 3 + 1] = 0.4; // G
-                    colors[i * 3 + 2] = 0.9; // B
-                } else if (colorChoice < 0.6) {
-                    colors[i * 3] = 0.3;     // R - nature green
-                    colors[i * 3 + 1] = 0.6; // G
-                    colors[i * 3 + 2] = 0.3; // B
-                } else if (colorChoice < 0.8) {
-                    colors[i * 3] = 0.4;     // R - blue particles
-                    colors[i * 3 + 1] = 0.8; // G
-                    colors[i * 3 + 2] = 0.9; // B
-                } else {
-                    colors[i * 3] = 0.9;     // R - white particles
-                    colors[i * 3 + 1] = 0.9; // G
-                    colors[i * 3 + 2] = 0.9; // B
-                }
-            }
-
-            const geometry = new THREE.BufferGeometry();
-            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-            const material = new THREE.PointsMaterial({
-                size: 0.05,
-                vertexColors: true,
-                transparent: true,
-                opacity: 0.6
-            });
-
-            particles = new THREE.Points(geometry, material);
-            scene.add(particles);
-
-            camera.position.z = 5;
+            camera.position.z = 15;
+            camera.position.y = 2;
             animate();
         }
 
-        function createSunsetSky() {
-            // Create a large plane for the sunset sky background
-            const skyGeometry = new THREE.PlaneGeometry(50, 30);
+        function onMouseMove(event) {
+            // Convert mouse position to normalized coordinates (-1 to 1)
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            
+            // Set target rotation based on mouse position (more subtle for galaxy)
+            targetRotation.y = mouse.x * Math.PI * 0.2;
+            targetRotation.x = mouse.y * Math.PI * 0.1;
+        }
+
+        function createGradientBackground() {
+            // Create a large plane that covers the entire viewport and beyond
+            const skyGeometry = new THREE.PlaneGeometry(100, 100);
             
             // Create gradient material for sunset sky
             const canvas = document.createElement('canvas');
@@ -677,91 +652,191 @@
             });
             
             const sky = new THREE.Mesh(skyGeometry, skyMaterial);
-            sky.position.z = -12;
+            sky.position.z = -20; // Move further back
             sky.position.y = 0;
             
             scene.add(sky);
         }
 
-        function createMountains() {
-            mountains = new THREE.Group();
+        function createAndromedaGalaxy() {
+            const particleCount = 800;
+            const positions = [];
+            const colors = [];
+            const sizes = [];
             
-            // Create multiple mountain layers for depth with darker silhouette colors
-            const mountainLayers = [
-                { color: new THREE.Color(0.08, 0.05, 0.15), z: -8, scale: 1.2 },   // Darkest silhouette
-                { color: new THREE.Color(0.12, 0.08, 0.20), z: -6, scale: 1.0 },   // Medium silhouette
-                { color: new THREE.Color(0.18, 0.12, 0.25), z: -4, scale: 0.8 }    // Lightest silhouette
-            ];
-
-            mountainLayers.forEach((layer, index) => {
-                const mountainGeometry = createMountainGeometry();
-                const mountainMaterial = new THREE.MeshBasicMaterial({ 
-                    color: layer.color,
-                    transparent: true,
-                    opacity: 0.9 - (index * 0.1)
-                });
+            // Galaxy parameters
+            const galaxyRadius = 8;
+            const coreRadius = 1.5;
+            const armCount = 4; // Number of spiral arms
+            const armSpread = 0.8; // How spread out the arms are
+            
+            for (let i = 0; i < particleCount; i++) {
+                // Generate particles in spiral arms
+                const armIndex = Math.floor(Math.random() * armCount);
+                const armAngle = (armIndex / armCount) * Math.PI * 2;
                 
-                const mountain = new THREE.Mesh(mountainGeometry, mountainMaterial);
-                mountain.position.z = layer.z;
-                mountain.scale.set(layer.scale, layer.scale, 1);
-                mountain.position.y = -2 - (index * 0.3);
+                // Distance from center (weighted toward center for realistic galaxy)
+                const u = Math.random();
+                const radius = Math.pow(u, 0.5) * galaxyRadius; // Square root for realistic distribution
                 
-                mountains.add(mountain);
-            });
-            
-            scene.add(mountains);
-        }
-
-        function createMountainGeometry() {
-            const shape = new THREE.Shape();
-            
-            // Create mountain silhouette with multiple peaks
-            const width = 20;
-            const peaks = [
-                { x: -width/2, y: 0 },
-                { x: -width/3, y: 2.5 },
-                { x: -width/6, y: 1.8 },
-                { x: 0, y: 3.2 },
-                { x: width/6, y: 2.1 },
-                { x: width/3, y: 2.8 },
-                { x: width/2, y: 0 }
-            ];
-            
-            shape.moveTo(peaks[0].x, peaks[0].y);
-            
-            // Create smooth curves between peaks
-            for (let i = 1; i < peaks.length; i++) {
-                const current = peaks[i];
-                const prev = peaks[i - 1];
+                // Spiral angle based on radius (arms get more twisted further out)
+                const spiralTightness = 3;
+                const angle = armAngle + (radius / galaxyRadius) * spiralTightness * Math.PI;
                 
-                // Add some randomness for natural look
-                const midX = (prev.x + current.x) / 2;
-                const midY = (prev.y + current.y) / 2 + (Math.random() - 0.5) * 0.5;
+                // Add some randomness to arm position
+                const angleNoise = (Math.random() - 0.5) * armSpread;
+                const radiusNoise = (Math.random() - 0.5) * 0.5;
                 
-                shape.quadraticCurveTo(midX, midY, current.x, current.y);
+                // Calculate position
+                const finalAngle = angle + angleNoise;
+                const finalRadius = Math.max(0.1, radius + radiusNoise);
+                
+                const x = Math.cos(finalAngle) * finalRadius;
+                const y = Math.sin(finalAngle) * finalRadius;
+                
+                // Add vertical spread (galaxy thickness)
+                const z = (Math.random() - 0.5) * Math.max(0.3, 2 - radius * 0.3);
+                
+                positions.push(x, y, z);
+                
+                // Color based on distance from center and temperature
+                let r, g, b;
+                
+                if (radius < coreRadius) {
+                    // Core: bright yellow-white stars
+                    r = 1.0;
+                    g = 0.9 + Math.random() * 0.1;
+                    b = 0.6 + Math.random() * 0.3;
+                } else if (radius < galaxyRadius * 0.6) {
+                    // Middle region: mix of blue and white stars
+                    const temp = Math.random();
+                    if (temp > 0.7) {
+                        // Blue-white hot stars
+                        r = 0.7 + Math.random() * 0.3;
+                        g = 0.8 + Math.random() * 0.2;
+                        b = 1.0;
+                    } else {
+                        // Yellow-white stars
+                        r = 1.0;
+                        g = 0.8 + Math.random() * 0.2;
+                        b = 0.5 + Math.random() * 0.3;
+                    }
+                } else {
+                    // Outer region: older red and yellow stars
+                    const temp = Math.random();
+                    if (temp > 0.5) {
+                        // Red giants
+                        r = 1.0;
+                        g = 0.3 + Math.random() * 0.4;
+                        b = 0.1 + Math.random() * 0.2;
+                    } else {
+                        // Yellow stars
+                        r = 1.0;
+                        g = 0.7 + Math.random() * 0.3;
+                        b = 0.2 + Math.random() * 0.3;
+                    }
+                }
+                
+                colors.push(r, g, b);
+                
+                // Size based on distance (closer stars appear larger)
+                const size = Math.max(0.02, (galaxyRadius - radius) / galaxyRadius * 0.15 + Math.random() * 0.05);
+                sizes.push(size);
             }
             
-            // Close the shape at the bottom
-            shape.lineTo(width/2, -1);
-            shape.lineTo(-width/2, -1);
-            shape.lineTo(peaks[0].x, peaks[0].y);
+            // Add some distant background stars
+            const backgroundStars = 200;
+            for (let i = 0; i < backgroundStars; i++) {
+                // Random positions far from galaxy
+                const angle = Math.random() * Math.PI * 2;
+                const distance = galaxyRadius + Math.random() * 5;
+                
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+                const z = (Math.random() - 0.5) * 8;
+                
+                positions.push(x, y, z);
+                
+                // Dim, distant stars
+                const brightness = 0.3 + Math.random() * 0.4;
+                colors.push(brightness, brightness, brightness * 1.2);
+                sizes.push(0.01 + Math.random() * 0.02);
+            }
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 3));
+
+            // Custom shader material for variable star sizes
+            const material = new THREE.PointsMaterial({
+                size: 0.08,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.9,
+                blending: THREE.AdditiveBlending,
+                sizeAttenuation: true
+            });
+
+            galaxyParticles = new THREE.Points(geometry, material);
             
-            const geometry = new THREE.ShapeGeometry(shape);
-            return geometry;
+            // Tilt the galaxy like we're viewing it at an angle
+            galaxyParticles.rotation.x = Math.PI * 0.2;
+            
+            scene.add(galaxyParticles);
         }
 
         function animate() {
             requestAnimationFrame(animate);
             
-            particles.rotation.y += 0.001;
-            particles.rotation.x += 0.0005;
-            
-            // Subtle mountain movement for atmospheric effect
-            if (mountains) {
-                mountains.rotation.y += 0.0002;
-                mountains.children.forEach((mountain, index) => {
-                    mountain.position.x = Math.sin(Date.now() * 0.0001 + index) * 0.1;
-                });
+            if (galaxyParticles) {
+                // Smooth interpolation toward target rotation (mouse following)
+                currentRotation.x += (targetRotation.x - currentRotation.x) * 0.02;
+                currentRotation.y += (targetRotation.y - currentRotation.y) * 0.02;
+                
+                // Apply mouse-based rotation
+                galaxyParticles.rotation.x = Math.PI * 0.2 + currentRotation.x; // Keep base tilt
+                galaxyParticles.rotation.y = currentRotation.y;
+                
+                // Slow galaxy rotation (like a real galaxy)
+                galaxyRotation += 0.001;
+                galaxyParticles.rotation.z = galaxyRotation;
+                
+                // Subtle pulsing effect for the galaxy core
+                const time = Date.now() * 0.0005;
+                const pulseFactor = 1 + Math.sin(time) * 0.05;
+                galaxyParticles.scale.setScalar(pulseFactor);
+                
+                // Animate star brightness (twinkling effect)
+                const colors = galaxyParticles.geometry.attributes.color.array;
+                const positions = galaxyParticles.geometry.attributes.position.array;
+                
+                for (let i = 0; i < colors.length; i += 3) {
+                    const particleIndex = i / 3;
+                    
+                    // Only animate some stars for performance
+                    if (particleIndex % 5 === 0) {
+                        const x = positions[i];
+                        const y = positions[i + 1];
+                        const radius = Math.sqrt(x * x + y * y);
+                        
+                        // Twinkling based on time and position
+                        const twinkle = 0.8 + 0.4 * Math.sin(time * 3 + particleIndex * 0.1);
+                        
+                        // Preserve original color ratios while applying twinkle
+                        const originalR = colors[i];
+                        const originalG = colors[i + 1];
+                        const originalB = colors[i + 2];
+                        
+                        // Make core stars brighter and more stable
+                        const coreFactor = radius < 1.5 ? 1.2 : 1.0;
+                        
+                        colors[i] = Math.min(1.0, originalR * twinkle * coreFactor);
+                        colors[i + 1] = Math.min(1.0, originalG * twinkle * coreFactor);
+                        colors[i + 2] = Math.min(1.0, originalB * twinkle * coreFactor);
+                    }
+                }
+                
+                galaxyParticles.geometry.attributes.color.needsUpdate = true;
             }
             
             renderer.render(scene, camera);
@@ -773,7 +848,6 @@
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
-
         // Project modal functionality
         const projectData = {
             project1: {
@@ -831,20 +905,39 @@
             project3: {
                 title: "Akiko: The Sight Beyond",
                 content: `
-                    <p>A 2D platformer that explores the Japanese folklore tales of the Dodomeki. Use your eyes to switch from the real world to the Yokai realm.</p>
+                    <p>
+                        A 2D platformer that explores the Japanese folklore tales of the Dodomeki. 
+                        Use your eyes to switch from the real world to the Yokai realm. Your journey
+                        is culminated by facing off the mystical Dodomeki herself!
+                    </p>
                     
                     <h3>Screenshots:</h3>
                     
                     
                     <div class="media-grid">
-                        
+                        <div class="media-placeholder">
+                            <img src="images/akiko/akikoIMG2.png" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="media-placeholder">
+                             <img src="images/akiko/akikoIMG3.png" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="media-placeholder">
+                             <img src="images/akiko/akikoIMG4.png" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>   
+                        <div class="media-placeholder">
+                             <img src="images/akiko/akikoIMG5.png" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>  
                     </div>
                 `
             },
             project4: {
                 title: "Scuba Hunter",
                 content: `
-                    <p>A 2D game where you take on the role of an underwater hunter, trapping fish in bubbles and avoiding deep-sea trash.</p>
+                    <p>
+                        A 2D game where you take on the role of an underwater hunter, 
+                        trapping fish in bubbles and avoiding deep-sea trash. Inspired
+                        by helping the environment.
+                    </p>
                     
                     <h3>Screenshots:</h3>
                     
