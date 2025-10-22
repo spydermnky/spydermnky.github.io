@@ -417,7 +417,9 @@
         <ul>
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
-            <li><a href="#projects">Projects</a></li>
+            <li><a href="#games">Games</a></li>
+            <li><a href="#models">3D Art</a></li>
+            <li><a href="#graphics">Graphics</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
@@ -426,7 +428,7 @@
         <div class="hero-content">
             <h1 class="hero-title">Hi! I'm Peter.</h1>
             <p class="hero-subtitle">Game Dev & SWE</p>
-            <a href="#projects" class="cta-button">Explore My Work</a>
+            <a href="#games" class="cta-button">Explore My Work</a>
         </div>
     </header>
 
@@ -445,7 +447,7 @@
             </div>
         </section>
 
-        <section id="projects" class="projects">
+        <section id="games" class="projects">
             <div class="container">
                 <h2 class="section-title">Games</h2>
                 <div class="projects-grid">
@@ -544,7 +546,7 @@
             </div>
         </section>
 
-        <section id="projects" class="projects">
+        <section id="models" class="projects">
             <div class="container">
                 <h2 class="section-title">3D Models & Cinematics</h2>
                 <div class="projects-grid">
@@ -600,6 +602,38 @@
                     </div>
 
                     
+
+                </div>
+            </div>
+        </section>
+
+        <section id="graphics" class="projects">
+            <div class="container">
+                <h2 class="section-title">Graphics</h2>
+                <div class="projects-grid">
+                    <div class="project-card" data-project="graphics1">
+                        <div class="project-preview">
+                            <img src="images/scotty3D/cg1.png" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Scotty3D</h3>
+                            <p class="project-description">
+                                3D Graphics Software Package for 15-362 @ CMU.
+                            </p>
+                            <div class="project-tags">
+                                <span class="tag">Graphics</span>
+                                <span class="tag">Rasterization</span>
+                                <span class="tag">Path Tracing</span>
+                                <span class="tag">Mesh Editing</span>
+                                <span class="tag">C++</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>                    
 
                 </div>
             </div>
@@ -1012,17 +1046,11 @@
                 title: "Far From Home",
                 content: `
                     <p>A 3D cinematic trying to convey the loneliness of the universe. Created in Autodesk Maya aided by 
-                        sculpting in ZBrush & texturing in Substance Painter.</p>
+                        sculpting in ZBrush & texturing in Substance Painter. Soundtrack credit: Nicolas Snyder.</p>
                     
                     <div class="media-grid">
-                        <div class="media-placeholder">
-                            <img src="images/farFromHome/farFromHomeIMG1.png" style="width: 100%; height: 100%; object-fit: cover;">
-                        </div>
-                        <div class="media-placeholder">
-                             <img src="images/farFromHome/farFromHomeIMG2.png" style="width: 100%; height: 100%; object-fit: cover;">
-                        </div>
-                        <div class="media-placeholder">
-                             <img src="images/farFromHome/farFromHomeIMG3.png" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="media-placeholder" style="height: auto; background: none;">
+                            <iframe src="https://player.vimeo.com/video/1129405620?badge=0&autopause=0&player_id=0&app_id=58479" width="100%" height="315" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                         </div>
                     </div>
                 `
@@ -1088,6 +1116,54 @@
                              <img src="images/scavenger/scavenger1.jpg" style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                     </div>
+                `
+            },
+            graphics1: {
+                title: "Scotty3D",
+                content: `
+                    <h2>Rasterization</h2>
+                    <p>
+                        The project's initial part centers on rasterized rendering techniques. In this stage, 
+                        I worked on implementing multiple capabilities including MVP transformation, 
+                        rendering of lines and triangles, mip-mapping, supersampling, and additional features. 
+                        Through this detailed work, I developed a thorough grasp of computer graphics rendering processes.    
+                    </p>
+                    <br>
+                    
+                    <div class="media-placeholder">
+                        <img src="images/scotty3D/cg2.png" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+
+                    <br>
+                    <h2>Mesh Editing</h2>
+                    <p>
+                        MeshEdit functions as Scotty3D's core module, providing capabilities for 3D modeling, subdivision, and mesh manipulation. 
+                        This robust application allows users to convert basic cube shapes into impressive, natural-looking 3D surfaces composed of 
+                        refined polygon meshes. Throughout development, I coded many of Scotty3D's local mesh manipulation features, including EdgeFlip, 
+                        EdgeCollapse, VertexExtrude, FaceBevel, and others. Building these functions gave me deep insight into the Halfedge data structure, 
+                        which serves as the connecting framework that links vertices, edges, and faces throughout the mesh.
+                    </p>
+                    <br>
+
+                    <div class="media-placeholder">
+                        <img src="images/scotty3D/cg3.png" style="width: 70%; height: 100%; object-fit: fill;">
+                    </div>
+
+                    <br>
+                    <h2>Global Remeshing Algorithms</h2>
+                    <p>
+                        Additionally, I integrated various global remeshing algorithms into the system, including Catmull-Clark Subdivision, 
+                        Loop Subdivision, and Simplification. These algorithms enable dynamic model modification and optimization, matching the 
+                        functionality of established 3D software packages.By implementing these features, I acquired significant hands-on 
+                        experience with sophisticated mesh operations and enhanced my knowledge of the advanced modeling methods and algorithms 
+                        that are standard in the 3D graphics field.
+                    </p>
+                    <br>
+
+                    <div class="media-placeholder">
+                        <img src="images/scotty3D/cg4.png" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+
                 `
             }
         };
